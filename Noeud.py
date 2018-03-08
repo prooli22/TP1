@@ -7,22 +7,21 @@
 '''
 
 class Noeud:
-   def __init__(self, xmin, xmax, ymin, ymax, parents=None):
+    def __init__(self, xmin, xmax, ymin, ymax, parents=None):
         self.NO = None
         self.NE = None
         self.SE = None
         self.SO = None
-        #self.xmin = xmin
-        #self.xmax = xmax
-        #self.ymin = ymin
-        #self.ymax = ymax
+        self.xmin = xmin
+        self.xmax = xmax
+        self.ymin = ymin
+        self.ymax = ymax
         self.parents = parents
-        self.frontiere = (xmin, ymin, xmax, ymax)
-        self.x_centre = (noeud.frontiere.xmin + noeud.frontiere.xmax) / 2
-        self.y_centre = (noeud.frontiere.ymin + noeud.frontiere.ymax) / 2
+        self.x_centre = (self.xmin + self.xmax) / 2
+        self.y_centre = (self.ymin + self.ymax) / 2
 
 
-    def children (self)
+    def children (self):
         return [ self.NE, self.NO, self.SE, self.SO ]
 
     # def diviser(self):

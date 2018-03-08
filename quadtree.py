@@ -7,6 +7,7 @@
 '''
 
 import sys
+import types
 from Noeud import Noeud
 from Bateau import Bateau
 from ListQueue import ListQueue
@@ -18,25 +19,25 @@ class Quadtree():
     def _inserer(self, bateau, noeud):
     
         # Test des frontières maximales du noeud.
-        if((bateau.x >= noeud.frontiere.xmin and bateau.x <= noeud.frontiere.xmax) 
-        and (bateau.y >= noeud.frontiere.ymin and bateau.y <= noeud.frontiere.ymax)):
+        if((bateau.x >= noeud.xmin and bateau.x <= noeud.xmax) 
+        and (bateau.y >= noeud.ymin and bateau.y <= noeud.ymax)):
 
             # Test quadrant NO.
             if(bateau.x <= noeud.x_centre and bateau.y <= noeud.y_centre):
                 if(noeud.NO == None):
                     noeud.NO = bateau
 
-                elif(isinstance(noeud.NO, Bateau))
+                elif isinstance(noeud.NO, Bateau):
                     ancienBateau = noeud.NO
-                    noeud.NO = Noeud(noeud.frontiere.xmin, 
+                    noeud.NO = Noeud(noeud.xmin, 
                                      noeud.x_centre, 
-                                     noeud.frontiere.ymin, 
+                                     noeud.ymin, 
                                      noeud.y_centre,
                                      noeud)
                     self._inserer(ancienBateau, noeud.NO)
                     self._inserer(bateau, noeud.NO)
 
-                else
+                else:
                     self._inserer(bateau, noeud.NO)
 
             # Test quadrant NE.
@@ -44,17 +45,17 @@ class Quadtree():
                 if(noeud.NE == None):
                     noeud.NE= bateau
 
-                elif(isinstance(noeud.NO, Bateau))
+                elif isinstance(noeud.NE, Bateau):
                     ancienBateau = noeud.NE
-                    noeud.NE = Noeud(noeud.frontiere.xmin, 
-                                     noeud.x_centre, 
-                                     noeud.frontiere.ymin, 
+                    noeud.NE = Noeud(noeud.x_centre, 
+                                     noeud.xmax, 
+                                     noeud.ymin, 
                                      noeud.y_centre,
                                      noeud)
                     self._inserer(ancienBateau, noeud.NE)
                     self._inserer(bateau, noeud.NE)
 
-                else
+                else:
                     self._inserer(bateau, noeud.NE)
 
             # Test quadrant SE.
@@ -62,17 +63,17 @@ class Quadtree():
                 if(noeud.SE == None):
                     noeud.SE = bateau
 
-                elif(isinstance(noeud.SE, Bateau))
+                elif isinstance(noeud.SE, Bateau):
                     ancienBateau = noeud.SE
-                    noeud.SE = Noeud(noeud.frontiere.xmin, 
-                                     noeud.x_centre, 
-                                     noeud.frontiere.ymin, 
-                                     noeud.y_centre,
+                    noeud.SE = Noeud(noeud.x_centre, 
+                                     noeud.xmax, 
+                                     noeud.y_centre, 
+                                     noeud.ymax,
                                      noeud)
                     self._inserer(ancienBateau, noeud.SE)
                     self._inserer(bateau, noeud.SE)
 
-                else
+                else:
                     self._inserer(bateau, noeud.SE)
 
             # Test quadrant SO.
@@ -80,17 +81,17 @@ class Quadtree():
                 if(noeud.SO == None):
                     noeud.SO = bateau
 
-                elif(isinstance(noeud.NO, Bateau))
+                elif isinstance(noeud.SO, Bateau):
                     ancienBateau = noeud.SO
-                    noeud.NO = Noeud(noeud.frontiere.xmin, 
+                    noeud.NO = Noeud(noeud.xmin, 
                                      noeud.x_centre, 
-                                     noeud.frontiere.ymin, 
-                                     noeud.y_centre,
+                                     noeud.y_centre, 
+                                     noeud.ymax,
                                      noeud)
                     self._inserer(ancienBateau, noeud.SO)
                     self._inserer(bateau, noeud.SO)
 
-                else
+                else:
                     self._inserer(bateau, noeud.SO)
 
     
@@ -102,18 +103,21 @@ class Quadtree():
 
 
     def _supprimer(self):
-
+        return
 
 
     def _detonnerBombes(self):
-
+        return
 
     def _imprimer(self, p):
-        if(isinstance(p, Bateau))
+        if isinstance(p, Bateau):
             print('[' + p.x + ' ' + p.y + ']')
 
-        else
-            print('<' + p.NO + ' ' + p.NE + ' ' + p.SE + ' ' + p.SO + '>')
+        else:
+            print('<' + '1' if(p.NO) else '0' + ' ' + 
+                        '1' if(p.NE) else '0' + ' ' + 
+                        '1' if(p.SE) else '0' + ' ' + 
+                        '1' if(p.SO) else '0' + '>')
 
 
     def _afficher(self):
@@ -121,9 +125,10 @@ class Quadtree():
         Q.enqueue( self.root )
         while not Q.is_empty():
             p = Q.dequeue()
-            self._imprimer( p )
-            for c in p.children():
-                Q.enqueue( c )
+            if(p != None):
+                self._imprimer( p )
+                for c in p.children():
+                    Q.enqueue( c )
 
 
     def jouer(self):
