@@ -5,7 +5,7 @@
    Data Structures & Algorithms in Python (c)2013
 """
 #from ListQueue import ListQueue
-    
+
 #ADT Tree "interface"
 class Tree:
 
@@ -90,12 +90,11 @@ class Tree:
 
     #print the subtree rooted by position p
     #using a breadth-first traversal
-    # def breadth_first_print( self ):
-    #     Q = ListQueue()
-    #     Q.enqueue( self.root() )
-    #     while not Q.is_empty():
-    #         p = Q.dequeue()
-    #         print( p )
-    #         for c in self.children( p ):
-    #             Q.enqueue( c )
-            
+    def breadth_first_print( self ):
+        Q = ListQueue()
+        Q.enqueue( self.root() )
+        while not Q.is_empty():
+            p = Q.dequeue()
+            print( p )
+            for c in self.children( p ):
+                Q.enqueue( c )

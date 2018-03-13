@@ -7,19 +7,22 @@
 '''
 
 import sys
-import types
+from math import log
 from Noeud import Noeud
 from Bateau import Bateau
 from ListQueue import ListQueue
 
 class Quadtree():
     def __init__(self):
-        self.root = Noeud(0, 16, 0, 16)
+        self._root = Noeud(0, 16, 0, 16)
 
     def _inserer(self, bateau, noeud):
-    
+
+        #if not isinstance(bateau, Bateau) or not isinstance(noeud, Noeud):
+            #return
+
         # Test des frontières maximales du noeud.
-        if((bateau.x >= noeud.xmin and bateau.x <= noeud.xmax) 
+        if((bateau.x >= noeud.xmin and bateau.x <= noeud.xmax)
         and (bateau.y >= noeud.ymin and bateau.y <= noeud.ymax)):
 
             # Test quadrant NO.
@@ -29,9 +32,9 @@ class Quadtree():
 
                 elif isinstance(noeud.NO, Bateau):
                     ancienBateau = noeud.NO
-                    noeud.NO = Noeud(noeud.xmin, 
-                                     noeud.x_centre, 
-                                     noeud.ymin, 
+                    noeud.NO = Noeud(noeud.xmin,
+                                     noeud.x_centre,
+                                     noeud.ymin,
                                      noeud.y_centre,
                                      noeud)
                     self._inserer(ancienBateau, noeud.NO)
@@ -47,9 +50,9 @@ class Quadtree():
 
                 elif isinstance(noeud.NE, Bateau):
                     ancienBateau = noeud.NE
-                    noeud.NE = Noeud(noeud.x_centre, 
-                                     noeud.xmax, 
-                                     noeud.ymin, 
+                    noeud.NE = Noeud(noeud.x_centre,
+                                     noeud.xmax,
+                                     noeud.ymin,
                                      noeud.y_centre,
                                      noeud)
                     self._inserer(ancienBateau, noeud.NE)
@@ -65,9 +68,9 @@ class Quadtree():
 
                 elif isinstance(noeud.SE, Bateau):
                     ancienBateau = noeud.SE
-                    noeud.SE = Noeud(noeud.x_centre, 
-                                     noeud.xmax, 
-                                     noeud.y_centre, 
+                    noeud.SE = Noeud(noeud.x_centre,
+                                     noeud.xmax,
+                                     noeud.y_centre,
                                      noeud.ymax,
                                      noeud)
                     self._inserer(ancienBateau, noeud.SE)
@@ -83,9 +86,9 @@ class Quadtree():
 
                 elif isinstance(noeud.SO, Bateau):
                     ancienBateau = noeud.SO
-                    noeud.NO = Noeud(noeud.xmin, 
-                                     noeud.x_centre, 
-                                     noeud.y_centre, 
+                    noeud.NO = Noeud(noeud.xmin,
+                                     noeud.x_centre,
+                                     noeud.y_centre,
                                      noeud.ymax,
                                      noeud)
                     self._inserer(ancienBateau, noeud.SO)
@@ -94,12 +97,12 @@ class Quadtree():
                 else:
                     self._inserer(bateau, noeud.SO)
 
-    
-    def _placerBateaux(self, ):
+
+    def _placerBateaux(self):
         listeBateaux = open('bateaux.txt', 'r').read().splitlines()
-        
+
         for i in listeBateaux:
-            self.inserer(Bateau(int(i.split(' ')[0]), int(i.split(' ')[1])), self.root)
+            self._inserer(Bateau(int(i.split(' ')[0]), int(i.split(' ')[1])), self._root)
 
 
     def _supprimer(self):
@@ -109,26 +112,22 @@ class Quadtree():
     def _detonnerBombes(self):
         return
 
-    def _imprimer(self, p):
-        if isinstance(p, Bateau):
-            print('[' + p.x + ' ' + p.y + ']')
-
-        else:
-            print('<' + '1' if(p.NO) else '0' + ' ' + 
-                        '1' if(p.NE) else '0' + ' ' + 
-                        '1' if(p.SE) else '0' + ' ' + 
-                        '1' if(p.SO) else '0' + '>')
-
-
     def _afficher(self):
         Q = ListQueue()
-        Q.enqueue( self.root )
+        Q.enqueue( self._root )
+        Q.enqueue(None)
         while not Q.is_empty():
             p = Q.dequeue()
-            if(p != None):
-                self._imprimer( p )
-                for c in p.children():
-                    Q.enqueue( c )
+            if(p is not None):
+                print(p, end='')
+                if isinstance(p, Noeud):
+                    for c in p.children():
+                        if(c is not None):
+                            Q.enqueue(c)
+            elif(not Q.is_empty()):
+                print()
+                Q.enqueue(None)
+        print()
 
 
     def jouer(self):

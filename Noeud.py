@@ -20,9 +20,15 @@ class Noeud:
         self.x_centre = (self.xmin + self.xmax) / 2
         self.y_centre = (self.ymin + self.ymax) / 2
 
+    def __str__(self):
+        return str('<' + ('0 ' if(self.NO is None) else '1 ') +
+                         ('0 ' if(self.NE is None) else '1 ') +
+                         ('0 ' if(self.SE is None) else '1 ') +
+                         ('0'  if(self.SO is None) else '1') + '>')
+
 
     def children (self):
-        return [ self.NE, self.NO, self.SE, self.SO ]
+        return [ self.NO, self.NE, self.SE, self.SO ]
 
     # def diviser(self):
     #    xmin, ymin = self.xmin, self.ymin
@@ -37,5 +43,3 @@ class Noeud:
     #        Noeud(xmin, y_centre, x_centre, ymax, depth, self),
     #        Noeud(x_centre, y_centre, xmax, ymax, depth, self)
     #    ]
-
-
