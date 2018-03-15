@@ -16,27 +16,46 @@ class Quadtree():
     def __init__(self):
         self._root = Noeud(0, 16, 0, 16)
 
+
+    def _tester_inserer(self, bateau, noeud, frontiere):
+        
+        if(noeud is None):
+            noeud = bateau
+
+        elif isinstance(noeud, Bateau):
+            ancien_bateau = noeud
+            noeud = frontiere
+            self._inserer(ancien_bateau, noeud)
+            self._inserer(bateau, noeud)
+
+        elif isinstance(noeud, Noeud):
+            self._inserer(bateau, noeud)
+
+        return noeud
+
+
     def _inserer(self, bateau, noeud):
 
-        emplacement = noeud.recevoirEmplacement(bateau)
-        # SI ON CATCH ---- RETURN
+        # On crée les frontières.
+        noeud.diviser()
 
-        if(emplacement[0] == None):
-            emplacement[0] = bateau
+        for key, value in noeud.frontieres.items():
+            if(value.dans_frontieres(bateau)):
+                if(key == "NO"):
+                    noeud.NO = self._tester_inserer(bateau, noeud.NO, value)
+                elif(key == "NE"):
+                    noeud.NE = self._tester_inserer(bateau, noeud.NE, value)
+                elif(key == "SE"):
+                    noeud.SE = self._tester_inserer(bateau, noeud.SE, value)
+                elif(key == "SO"):
+                    noeud.SO = self._tester_inserer(bateau, noeud.SO, value)
+                return
 
-        else:
-            if isinstance(emplacement[0], Bateau):
-                ancienBateau = emplacement[0]
-                emplacement[0] = emplacement[1]
-                self._inserer(emplacement[0], ancienBateau)
 
-            self._inserer(emplacement[0], bateau)
+    def _placer_bateaux(self):
+        lst_bateaux = open('bateaux.txt', 'r').read().splitlines()
 
-
-    def _placerBateaux(self):
-        listeBateaux = open('bateaux.txt', 'r').read().splitlines()
-
-        for i in listeBateaux:
+        for i in lst_bateaux:
             self._inserer(Bateau(int(i.split(' ')[0]), int(i.split(' ')[1])), self._root)
 
 
@@ -44,7 +63,7 @@ class Quadtree():
         return
 
 
-    def _detonnerBombes(self):
+    def _detonner_bombes(self):
         return
 
 
@@ -57,7 +76,7 @@ class Quadtree():
             if(p is not None):
                 print(p, end='')
                 if isinstance(p, Noeud):
-                    for c in p.children():
+                    for c in p.enfants():
                         if(c is not None):
                             Q.enqueue(c)
             elif(not Q.is_empty()):
@@ -67,6 +86,6 @@ class Quadtree():
 
 
     def jouer(self):
-            self._placerBateaux()
-            self._detonnerBombes()
+            self._placer_bateaux()
+            self._detonner_bombes()
             self._afficher()
