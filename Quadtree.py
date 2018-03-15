@@ -7,7 +7,6 @@
 '''
 
 import sys
-from math import log
 from Noeud import Noeud
 from Bateau import Bateau
 from ListQueue import ListQueue
@@ -18,7 +17,7 @@ class Quadtree():
 
 
     def _tester_inserer(self, bateau, noeud, frontiere):
-        
+
         if(noeud is None):
             noeud = bateau
 
@@ -37,19 +36,32 @@ class Quadtree():
     def _inserer(self, bateau, noeud):
 
         # On crée les frontières.
-        noeud.diviser()
+        if(not noeud.frontiere):
+            noeud.creer_frontieres()
 
-        for key, value in noeud.frontieres.items():
-            if(value.dans_frontieres(bateau)):
-                if(key == "NO"):
-                    noeud.NO = self._tester_inserer(bateau, noeud.NO, value)
-                elif(key == "NE"):
-                    noeud.NE = self._tester_inserer(bateau, noeud.NE, value)
-                elif(key == "SE"):
-                    noeud.SE = self._tester_inserer(bateau, noeud.SE, value)
-                elif(key == "SO"):
-                    noeud.SO = self._tester_inserer(bateau, noeud.SO, value)
-                return
+        if(noeud.frontieres["NO"].dans_frontieres(bateau)):
+            noeud.NO = self._tester_inserer(bateau, noeud.NO, noeud.frontieres["NO"])
+
+        elif(noeud.frontieres["NE"].dans_frontieres(bateau)):
+            noeud.NE = self._tester_inserer(bateau, noeud.NE, noeud.frontieres["NE"])
+
+        elif(noeud.frontieres["SE"].dans_frontieres(bateau)):
+            noeud.SE = self._tester_inserer(bateau, noeud.SE, noeud.frontieres["SE"])
+
+        elif(noeud.frontieres["SO"].dans_frontieres(bateau)):
+            noeud.SO = self._tester_inserer(bateau, noeud.SO, noeud.frontieres["SO"])
+
+        # for cle, valeur in noeud.frontieres.items():
+        #     if(valeur.dans_frontieres(bateau)):
+        #         if(cle == "NO"):
+        #             noeud.NO = self._tester_inserer(bateau, noeud.NO, valeur)
+        #         elif(cle == "NE"):
+        #             noeud.NE = self._tester_inserer(bateau, noeud.NE, valeur)
+        #         elif(cle == "SE"):
+        #             noeud.SE = self._tester_inserer(bateau, noeud.SE, valeur)
+        #         elif(cle == "SO"):
+        #             noeud.SO = self._tester_inserer(bateau, noeud.SO, valeur)
+        #         return
 
 
     def _placer_bateaux(self):
