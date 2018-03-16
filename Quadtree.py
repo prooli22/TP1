@@ -17,7 +17,6 @@ class Quadtree():
 
 
     def _tester_inserer(self, bateau, noeud, frontiere):
-
         if(noeud is None):
             noeud = bateau
 
@@ -25,7 +24,9 @@ class Quadtree():
             ancien_bateau = noeud
             noeud = frontiere
             self._inserer(ancien_bateau, noeud)
-            self._inserer(bateau, noeud)
+
+            if(noeud.x_centre > 1 or noeud.y_centre > 1):
+                self._inserer(bateau, noeud)
 
         elif isinstance(noeud, Noeud):
             self._inserer(bateau, noeud)
@@ -34,10 +35,19 @@ class Quadtree():
 
 
     def _inserer(self, bateau, noeud):
+        #On test si le bateau sera trop proche d'un autre.
+        #if(noeud.x_centre < 1 or noeud.y_centre < 1):
+            #return
 
-        # On crée les frontières.
-        if(not noeud.frontiere):
+        #On crée les frontières.
+        if(noeud.frontieres["NO"] is None):
             noeud.creer_frontieres()
+            # try:
+            # except RecursionError:
+            #     print(bateau)
+            #     return
+
+        
 
         if(noeud.frontieres["NO"].dans_frontieres(bateau)):
             noeud.NO = self._tester_inserer(bateau, noeud.NO, noeud.frontieres["NO"])
@@ -51,24 +61,13 @@ class Quadtree():
         elif(noeud.frontieres["SO"].dans_frontieres(bateau)):
             noeud.SO = self._tester_inserer(bateau, noeud.SO, noeud.frontieres["SO"])
 
-        # for cle, valeur in noeud.frontieres.items():
-        #     if(valeur.dans_frontieres(bateau)):
-        #         if(cle == "NO"):
-        #             noeud.NO = self._tester_inserer(bateau, noeud.NO, valeur)
-        #         elif(cle == "NE"):
-        #             noeud.NE = self._tester_inserer(bateau, noeud.NE, valeur)
-        #         elif(cle == "SE"):
-        #             noeud.SE = self._tester_inserer(bateau, noeud.SE, valeur)
-        #         elif(cle == "SO"):
-        #             noeud.SO = self._tester_inserer(bateau, noeud.SO, valeur)
-        #         return
-
 
     def _placer_bateaux(self):
         lst_bateaux = open('./tests/bateaux.txt', 'r').read().splitlines()
 
         for i in lst_bateaux:
-            self._inserer(Bateau(int(i.split(' ')[0]), int(i.split(' ')[1])), self._root)
+            coord = i.split(' ')
+            self._inserer(Bateau(int(coord[0]), int(coord[1])), self._root)
 
 
     def _supprimer(self):
@@ -98,6 +97,7 @@ class Quadtree():
 
 
     def jouer(self):
-            self._placer_bateaux()
-            self._detonner_bombes()
-            self._afficher()
+        self._placer_bateaux()
+        #self._detonner_bombes()
+        #self._afficher()
+        print("TERMINÉ !")

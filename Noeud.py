@@ -21,7 +21,6 @@ class Noeud:
         self.parents = parents
         self.x_centre = (xmin + xmax) / 2
         self.y_centre = (ymin + ymax) / 2
-        self.frontiere = False
         self.frontieres = {"NO" : None, "NE" : None, "SE" : None, "SO" : None}
 
     def __str__(self):
@@ -34,10 +33,7 @@ class Noeud:
         return [ self.NO, self.NE, self.SE, self.SO ]
 
     def creer_frontieres(self):
-        # Connaitre si les frontières ont déjà été créée.
-        self.frontiere = True
-
-        # Si la frontière n'est pas divisible par 2, on prend le plafond de celle-ci.
+        # Si la frontière n'est pas divisible par 2, on prend le plafond de la moitié de celle-ci.
         if not isinstance(self.x_centre, int) or not isinstance(self.y_centre, int):
             self.x_centre = math.ceil(self.x_centre)
             self.y_centre = math.ceil(self.y_centre)
