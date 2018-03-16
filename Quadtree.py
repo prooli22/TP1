@@ -13,7 +13,7 @@ from ListQueue import ListQueue
 
 class Quadtree():
     def __init__(self):
-        self._root = Noeud(0, 16, 0, 16)
+        self._root = Noeud(0, 10315, 0, 10315)
 
 
     def _tester_inserer(self, bateau, noeud, frontiere):
@@ -65,7 +65,7 @@ class Quadtree():
 
 
     def _placer_bateaux(self):
-        lst_bateaux = open('bateaux.txt', 'r').read().splitlines()
+        lst_bateaux = open('./tests/bateaux.txt', 'r').read().splitlines()
 
         for i in lst_bateaux:
             self._inserer(Bateau(int(i.split(' ')[0]), int(i.split(' ')[1])), self._root)
