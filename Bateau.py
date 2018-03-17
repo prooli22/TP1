@@ -1,5 +1,5 @@
 '''
-    Fichier : Bateaux
+    Fichier : Bateau
     Projet  : TP1
     Cours   : IFT2015 - Stuctures de données
     Auteurs : Olivier Provost (20101738)

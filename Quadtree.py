@@ -9,6 +9,7 @@
 import sys
 from Noeud import Noeud
 from Bateau import Bateau
+from Bombe import Bombe
 from ListQueue import ListQueue
 
 class Quadtree():
@@ -64,12 +65,16 @@ class Quadtree():
             self._inserer(Bateau(int(coord[0]), int(coord[1])), self._root)
 
 
-    def _supprimer(self):
+    def _supprimer(self, bombe, noeud):
         return
 
 
     def _detonner_bombes(self):
-        return
+        lst_bombes = open('./tests/bombes.txt', 'r').read().splitlines()
+
+        for i in lst_bateaux:
+            coord = i.split('.')
+            self._supprimer(Bombe(int(coord[0]), int(coord[1]), int(coord[2]), int(coord[3])), self._root)
 
 
     def _afficher(self):
