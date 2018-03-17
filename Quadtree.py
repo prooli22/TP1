@@ -36,18 +36,12 @@ class Quadtree():
 
     def _inserer(self, bateau, noeud):
         #On test si le bateau sera trop proche d'un autre.
-        #if(noeud.x_centre < 1 or noeud.y_centre < 1):
-            #return
+        if((noeud.x_max - noeud.x_min < 2) or (noeud.y_max - noeud.y_min < 2)):
+            return
 
         #On crée les frontières.
         if(noeud.frontieres["NO"] is None):
             noeud.creer_frontieres()
-            # try:
-            # except RecursionError:
-            #     print(bateau)
-            #     return
-
-        
 
         if(noeud.frontieres["NO"].dans_frontieres(bateau)):
             noeud.NO = self._tester_inserer(bateau, noeud.NO, noeud.frontieres["NO"])
@@ -63,7 +57,7 @@ class Quadtree():
 
 
     def _placer_bateaux(self):
-        lst_bateaux = open('./tests/bateaux.txt', 'r').read().splitlines()
+        lst_bateaux = open('./tests/bateaux1.txt', 'r').read().splitlines()
 
         for i in lst_bateaux:
             coord = i.split(' ')
@@ -98,6 +92,5 @@ class Quadtree():
 
     def jouer(self):
         self._placer_bateaux()
-        #self._detonner_bombes()
+        self._detonner_bombes()
         #self._afficher()
-        print("TERMINÉ !")
