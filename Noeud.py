@@ -9,7 +9,7 @@
 import math
 
 class Noeud:
-    def __init__(self, xmin, xmax, ymin, ymax, parents=None):
+    def __init__(self, xmin, xmax, ymin, ymax, parent=None):
         self.x_min = xmin
         self.x_max = xmax
         self.y_min = ymin
@@ -18,7 +18,7 @@ class Noeud:
         self.NE = None
         self.SE = None
         self.SO = None
-        self.parents = parents
+        self.parent = parent
         self.x_centre = (xmin + xmax) / 2
         self.y_centre = (ymin + ymax) / 2
         self.frontieres = {"NO" : None, "NE" : None, "SE" : None, "SO" : None}
@@ -58,3 +58,7 @@ class Noeud:
             return True
         else:
             return False
+
+    def suicide(self):
+        if(self.NO is None and self.NE is None and self.SE is None and self.SO is None):
+            del self
