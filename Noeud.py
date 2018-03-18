@@ -36,14 +36,13 @@ class Noeud:
 
 
     def creer_frontieres(self):
-        # Si la frontière n'est pas divisible par 2, on prend le plafond de la moitié de celle-ci.
-        if not isinstance(self.x_centre, int) or not isinstance(self.y_centre, int):
-            self.x_centre = math.ceil(self.x_centre)
-            self.y_centre = math.ceil(self.y_centre)
+        # Si la frontière est plus grande que 1 on peut la diviser.
+        if((self.x_max - self.x_min > 1) or (self.y_max - self.y_min > 1)):
+            # Si la frontière n'est pas divisible par 2, on prend le plafond de la moitié de celle-ci.
+            if not isinstance(self.x_centre, int) or not isinstance(self.y_centre, int):
+                self.x_centre = math.ceil(self.x_centre)
+                self.y_centre = math.ceil(self.y_centre)
 
-        # Si la frontière n'est plus divisible par 4, cas impossible théoriquement
-        if((self.x_max - self.x_min == 1) or (self.y_max - self.y_min == 1)):
-            return
 
         self.frontieres["NO"] = Noeud(self.x_min, self.x_centre, self.y_min, self.y_centre, self)
         self.frontieres["NE"] = Noeud(self.x_centre, self.x_max, self.y_min, self.y_centre, self)
