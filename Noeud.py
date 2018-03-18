@@ -41,6 +41,10 @@ class Noeud:
             self.x_centre = math.ceil(self.x_centre)
             self.y_centre = math.ceil(self.y_centre)
 
+        # Si la frontière n'est plus divisible par 4, cas impossible théoriquement
+        if((self.x_max - self.x_min == 1) or (self.y_max - self.y_min == 1)):
+            return
+
         self.frontieres["NO"] = Noeud(self.x_min, self.x_centre, self.y_min, self.y_centre, self)
         self.frontieres["NE"] = Noeud(self.x_centre, self.x_max, self.y_min, self.y_centre, self)
         self.frontieres["SE"] = Noeud(self.x_centre, self.x_max, self.y_centre, self.y_max, self)
